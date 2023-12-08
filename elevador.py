@@ -31,10 +31,29 @@ class Elevador(object):
         return(
             '\n Andar Atual..............' + str(self.getAndarAtual()) +
             '\n Peso.....................{:.2f}'.format(self.getPeso()) +
-            '\n\t\t\t -- Porta Aberta -- ' if self.getPortaAberta() else '\n\t\t\t -- Porta Fechada --'
+            '\n\t\t -- Porta Aberta -- ' if self.getPortaAberta() else '\n\t\t\t -- Porta Fechada -- '
         )
 
     def subir(self, andarDesejado):
-        while self.andarAtual < andarDesejado:
-            self.andarAtual+=1
-            print('{}º andar...'.format(self.andarAtual))
+        if self.fecharPorta():
+            while self.andarAtual < andarDesejado:
+                self.andarAtual+=1
+                print('{}º andar...'.format(self.andarAtual))
+            self.setPortaAberta(True)
+        else:
+            print('Excesso de Peso! Porta Aberta!')
+
+
+    def descer(self, andarDesejado):
+        if self.fecharPorta():
+            while self.andarAtual > andarDesejado:
+                self.andarAtual-=1
+                print('{}ª andar...'.format(self.andarAtual))
+        else:
+            print('Excesso de peso! Porta Aberta!')
+
+
+    def fecharPorta(self):
+        if self.peso < 750.0:
+            self.setPortaAberta(False)
+        return not self.getPortaAberta()
